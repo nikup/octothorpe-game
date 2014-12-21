@@ -11,7 +11,7 @@
     $(function() {
         console.log("I AM READY");
         var
-            socket = new io("http://localhost:3000"),
+            socket = new io(window.location.hostname),
             socketId = null,
             gameId = null;
 
@@ -35,7 +35,7 @@
         function runAfterSocketHasConnected() {
             $("#createGame").on("click", function() {
                 $.ajax({
-                    url: "http://localhost:3000/createGame",
+                    url: "createGame",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({
@@ -51,7 +51,7 @@
             $("#joinGame").on("click", function() {
                 gameId = $("#joinGameId").val();
                 $.ajax({
-                    url: "http://localhost:3000/joinGame",
+                    url: "joinGame",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({
