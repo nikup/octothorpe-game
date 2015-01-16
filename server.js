@@ -183,5 +183,5 @@ app.get("/games2", function(req,res) {
 });
 
 http.listen(process.env.PORT || 3000, function(){
-    console.log('listening on *:3000');
+    console.log('listening on port:' , process.env.PORT || 3000);
 });
