@@ -14,10 +14,6 @@ function init() {
 	canvas.height = 500;
 	canvas.style.display = "inline";
 
-	context.font = canvas.height / 2 + "px Times New Roman";
-	context.textAlign = "center";
-	context.textBaseline = "middle";
-
 	$.getJSON("data.json", function(data) {
 	   elements = data.elements;
 	   config = data.config;
@@ -28,9 +24,8 @@ function animate() {
 	window.requestAnimationFrame(animate);
 
 	context.clearRect(0,0,canvas.width, canvas.height);
-	//context.fillText(new Date().toTimeString().substr(0, 8), canvas.width / 2, canvas.height / 2);
-	drawElements();
 	updateElements();
+	drawElements();
 }
 
 function drawElements() {
