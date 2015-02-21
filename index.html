@@ -1,11 +1,16 @@
-<input type="text" id="playerName" value="RadoRado">
+<input type="text" id="playerName">
 <button id="createGame">Create Game</button>
 
 <br>
 <input type="text" id="joinGameId">
-<button id="joinGame">Join Game</button>
+<button id="joinGame">Join Game</button> <br/>
+<canvas id="game-canvas" style="display: none"></canvas>
+
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/socket.io-client/socket.io.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="client.js"></script>
+
 
 <script>
     $(function() {
@@ -45,6 +50,8 @@
                 }).done(function(result) {
                     gameId = result.gameId;
                     console.log("Game is created with id: ", gameId);
+                    init();
+                    animate();
                 });
             });
 
@@ -61,7 +68,15 @@
                     })
                 }).done(function(result) {
                     console.log(result);
+                    socket.emit("move", {"gameId" : gameId});
+                    init();
+                    animate();
                 });
+            });
+
+            $(document).on("keydown", function(e) {
+                console.log(e.keyCode);
+                keyPressed(e.keyCode);
             });
         }
     });
