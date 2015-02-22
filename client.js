@@ -39,7 +39,7 @@ function drawElements() {
 }
 
 function drawElement(element) {
-	context.fillColor = element.color || "#000000";
+	context.fillStyle = element.color || "#000000";
 	context.fillRect(element.x, element.y, element.width, element.height);
 }
 
@@ -54,7 +54,53 @@ function updateElements() {
 
 	_.each(activeElements, function (e) {
 		e.y += config.speed || 1;
-	})
+		var boundToElement = _.find(elements, function (element) {
+			return element.id === e.boundTo;
+		});
+
+		if (boundToElement) {
+			var x = _.min([e.x, boundToElement.x]),
+				y = _.min([e.y, boundToElement.y]),
+				width = Math.abs(e.y - boundToElement.y) < 10 ? e.width + boundToElement.width : e.width, 
+				height = Math.abs(e.x - boundToElement.x) < 10 ? e.height + boundToElement.height : e.height;
+		};
+
+		_.each(elements, function (second) {
+			if(second.stage && second.player === e.player) {
+				if (second.y + second.height <= (y || e.y) + (height || e.height)) {
+					e.active = false;
+					e.y = second.y + second.height - e.height;
+				}
+
+				if (second.x + second.width <= (x || e.x) + (width || e.width)) {
+					if (boundToElement && e.x < boundToElement.x) {
+						e.x = second.x + second.width - e.width - boundToElement.width;	
+					} else {
+						e.x = second.x + second.width - e.width;
+					}
+				}
+
+				if (second.x >= (x || e.x)) {
+					if (boundToElement && e.x > boundToElement.x) {
+						e.x = second.x + e.width;	
+					} else {
+						e.x = second.x;
+					}
+				}
+			} else if (second.static && second.player === e.player) {
+				if ((x || e.x) < second.x + second.width &&
+					   (x || e.x) + (width || e.width) > second.x &&
+					   (y || e.y) < second.y + second.height &&
+					   (height || e.height) + (y || e.y) > second.y) {
+
+				    if (second.y <= (y || e.y) + (height || e.height)) {
+						e.active = false;
+						e.y = second.y - e.height;
+					}
+				}
+			}
+		});
+	});
 }
 
 function keyPressed(keyCode) {
@@ -80,13 +126,73 @@ function keyPressed(keyCode) {
 		case 37: 
 			_.each(activeElements, function (e) {
 				e.x -= 10;
+				//detectForColisionsLeft(e);
 			});
 			break;
 		case 39: 
 			_.each(activeElements, function (e) {
 				e.x += 10;
+				detectForColisionsRight(e);
 			});
 			break;
+	}
+
+	function detectForColisionsLeft(e) {
+		var boundToElement = _.find(elements, function (element) {
+			return element.id === e.boundTo;
+		});
+
+		if (boundToElement) {
+			var x = _.min([e.x, boundToElement.x]),
+				y = _.min([e.y, boundToElement.y]),
+				width = Math.abs(e.y - boundToElement.y) < 10 ? e.width + boundToElement.width : e.width, 
+				height = Math.abs(e.x - boundToElement.x) < 10 ? e.height + boundToElement.height : e.height;
+		};
+		_.each(elements, function (second) {
+			if ((x || e.x) < second.x + second.width &&
+			   (x || e.x) + (width || e.width) > second.x &&
+			   (y || e.y) < second.y + second.height &&
+			   (height || e.height) + (y || e.y) > second.y) {
+
+				if (second.x <= (x || e.x) + (width || e.width)) {
+					if (boundToElement && e.x < boundToElement.x) {
+						e.x = second.x - e.width - boundToElement.width;	
+					} else {
+						e.x = second.x - e.width;
+					}
+				} 
+			}
+		});
+	}
+
+	function detectForColisionsRight(e) {
+		var boundToElement = _.find(elements, function (element) {
+			return element.id === e.boundTo;
+		});
+
+		if (boundToElement) {
+			var x = _.min([e.x, boundToElement.x]),
+				y = _.min([e.y, boundToElement.y]),
+				width = Math.abs(e.y - boundToElement.y) < 10 ? e.width + boundToElement.width : e.width, 
+				height = Math.abs(e.x - boundToElement.x) < 10 ? e.height + boundToElement.height : e.height;
+		};
+		_.each(elements, function (second) {
+			if (second.static && second.player === e.player) {
+				if ((x || e.x) < second.x + second.width &&
+				   (x || e.x) + (width || e.width) > second.x &&
+				   (y || e.y) < second.y + second.height &&
+				   (height || e.height) + (y || e.y) > second.y) {
+
+					if (second.x + second.width >= (x || e.x)) {
+						if (boundToElement && e.x < boundToElement.x) {
+							e.x = second.x - boundToElement.width - e.width;	
+						} else {
+							e.x = second.x - e.width;
+						}
+					}
+				}
+			}
+		});
 	}
 
 }

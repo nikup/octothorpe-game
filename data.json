@@ -1,17 +1,80 @@
 {
-	"config": {
-		"speed": 0.3
-	},
-	"elements":[{
-		"x": 0,
-		"y": 0, 
-		"width": 50,
-		"height": 50,
-		"active": true
-	}, {
-		"x": 500,
-		"y": 0,
-		"width": 50,
-		"height": 50
-	}]
+    "config": {
+        "speed": 0.3
+    },
+    "elements":[{
+        "x": 10,
+        "y": 10, 
+        "width": 285,
+        "height": 480,
+        "color": "#989898",
+        "stage": true,
+        "player": 1
+    },{
+        "x": 305,
+        "y": 10, 
+        "width": 285,
+        "height": 480,
+        "color": "#989898",
+        "stage": true,
+        "player": 2
+    },{
+        "x": 0,
+        "y": 0, 
+        "width": 600,
+        "height": 10,
+        "wall": true
+    },{
+        "x": 0,
+        "y": 490, 
+        "width": 600,
+        "height": 10,
+        "wall": true
+    },{
+        "x": 0,
+        "y": 0, 
+        "width": 10,
+        "height": 500,
+        "wall": true
+    },{
+        "x": 590,
+        "y": 0, 
+        "width": 10,
+        "height": 500,
+        "wall": true
+    },{
+        "x": 295,
+        "y": 0, 
+        "width": 10,
+        "height": 500,
+        "wall": true
+    },{
+        "id": "block1",
+        "x": 500,
+        "y": 0,
+        "width": 50,
+        "height": 50,
+        "color": "#ff0000",
+        "boundTo": "block2",
+        "active": true,
+        "player": 2
+    },{
+        "id": "block2",
+        "x": 450,
+        "y": 0,
+        "width": 50,
+        "height": 50,
+        "color": "#0000ff",
+        "boundTo": "block1",
+        "active": true,
+        "player": 2
+    },{
+        "x": 450,
+        "y": 300,
+        "width": 50,
+        "height": 50,
+        "color": "#000000",
+        "static": true,
+        "player": 2
+    }]
 }
